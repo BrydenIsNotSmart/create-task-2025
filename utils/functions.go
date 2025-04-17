@@ -7,8 +7,11 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"slices"
 	"strings"
 )
+
+var choices = []string{"rock", "paper", "scissors"}
 
 func AskToPlay() {
 	for {
@@ -78,12 +81,13 @@ func AskCPUOrPlayer() int {
 func AskForChoice(playerName string) string {
 	ClearTerminal()
 	reader := bufio.NewReader(os.Stdin)
+
 	for {
 		fmt.Printf("%s, choose Rock, Paper, or Scissors: ", playerName)
 		text, _ := reader.ReadString('\n')
 		text = strings.ToLower(strings.TrimSpace(text))
 
-		if text == "rock" || text == "paper" || text == "scissors" {
+		if slices.Contains(choices, text) {
 			return text
 		}
 		fmt.Println("Invalid choice. Try again.")
@@ -91,7 +95,6 @@ func AskForChoice(playerName string) string {
 }
 
 func GetCPUChoice() string {
-	choices := []string{"rock", "paper", "scissors"}
 	return choices[rand.Intn(len(choices))]
 }
 
