@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"os/exec"
 	"runtime"
@@ -72,4 +73,45 @@ func AskCPUOrPlayer() int {
 			continue
 		}
 	}
+}
+
+func AskForChoice(playerName string) string {
+	ClearTerminal()
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Printf("%s, choose Rock, Paper, or Scissors: ", playerName)
+		text, _ := reader.ReadString('\n')
+		text = strings.ToLower(strings.TrimSpace(text))
+
+		if text == "rock" || text == "paper" || text == "scissors" {
+			return text
+		}
+		fmt.Println("Invalid choice. Try again.")
+	}
+}
+
+func GetCPUChoice() string {
+	choices := []string{"rock", "paper", "scissors"}
+	return choices[rand.Intn(len(choices))]
+}
+
+func DetermineWinner(p1Choice, p2Choice string) int {
+	if p1Choice == p2Choice {
+		return 0
+	}
+	switch p1Choice {
+	case "rock":
+		if p2Choice == "scissors" {
+			return 1
+		}
+	case "paper":
+		if p2Choice == "rock" {
+			return 1
+		}
+	case "scissors":
+		if p2Choice == "paper" {
+			return 1
+		}
+	}
+	return 2
 }
